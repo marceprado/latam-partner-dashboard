@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>LATAM Partner Dashboard</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif;background:#F2F2F7;color:#1C1C1E}
+.hdr{background:linear-gradient(135deg,#1C1C1E,#2C2C2E);color:#fff;padding:20px 32px 16px}
+.hdr-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.hdr h1{font-size:20px;font-weight:700;display:flex;align-items:center;gap:8px}
+.hsub{color:#98989D;font-size:11px;margin-top:3px}
+.stats{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.stat{background:rgba(255,255,255,.09);border-radius:10px;padding:8px 13px}
+.sv{font-size:20px;font-weight:700}.sl{font-size:9px;color:#98989D;text-transform:uppercase;letter-spacing:.4px;margin-top:1px}
+.red{color:#FF453A}.grn{color:#30D158}
+.rfbtn{background:#007AFF;color:#fff;border:none;border-radius:9px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+.fbar{background:#fff;border-bottom:1px solid #E5E5EA;padding:14px 32px;display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap;position:sticky;top:0;z-index:100;box-shadow:0 1px 6px rgba(0,0,0,.07)}
+.fg{display:flex;flex-direction:column;gap:4px}
+.fg label{font-size:10px;font-weight:700;color:#6C6C70;text-transform:uppercase;letter-spacing:.5px}
+.fg select,.fg input{border:1.5px solid #D1D1D6;border-radius:10px;padding:9px 12px;font-size:13px;font-family:inherit;background:#F2F2F7;color:#1C1C1E;outline:none;cursor:pointer;transition:border .2s}
+.fg select:focus,.fg input:focus{border-color:#007AFF;background:#fff}
+#ps{width:240px}#ts{width:210px}
+.clr{border:1.5px solid #D1D1D6;border-radius:10px;padding:9px 14px;font-size:12px;font-weight:600;cursor:pointer;background:transparent;color:#8E8E93;align-self:flex-end;transition:all .15s}
+.clr:hover{background:#FF3B30;color:#fff;border-color:#FF3B30}
+.detail{padding:20px 32px 50px}
+.empty{text-align:center;color:#8E8E93;padding:80px 20px;font-size:14px;line-height:2}
+.empty .big{font-size:40px;display:block;margin-bottom:10px}
+.ph{display:flex;align-items:center;gap:12px;margin-bottom:18px;padding:15px 20px;background:#fff;border-radius:14px;box-shadow:0 1px 5px rgba(0,0,0,.06)}
+.pf{font-size:30px}.pn{font-size:22px;font-weight:700;flex:1}
+.pm{font-size:12px;color:#8E8E93;margin-top:2px}
+.tb{border-radius:20px;font-size:11px;font-weight:700;padding:4px 11px}
+.tb1{background:#FF9F0A18;color:#FF9F0A;border:1px solid #FF9F0A50}
+.tb2{background:#34C75918;color:#34C759;border:1px solid #34C75950}
+.tb3{background:#8E44AD18;color:#8E44AD;border:1px solid #8E44AD50}
+.ub{background:#FF3B3018;color:#FF3B30;border:1px solid #FF3B3050;border-radius:20px;font-size:11px;font-weight:700;padding:4px 10px;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.box{background:#fff;border-radius:14px;box-shadow:0 1px 4px rgba(0,0,0,.05);overflow:hidden;display:flex;flex-direction:column}
+.box.full{grid-column:1/-1}
+.bh{padding:13px 16px 11px;border-bottom:1px solid #F5F5F5;display:flex;align-items:center;gap:8px}
+.bi{font-size:18px}.bt{font-size:14px;font-weight:700;flex:1}
+.bc{font-size:12px;font-weight:700;border-radius:11px;padding:2px 9px}
+.bb{padding:0 14px 12px;flex:1;overflow-y:auto;max-height:260px}
+.be{text-align:center;color:#C7C7CC;font-size:12px;padding:22px 0;font-style:italic}
+.er{display:flex;align-items:flex-start;gap:7px;padding:7px 2px;border-bottom:1px solid #F5F5F7}
+.er:last-child{border:none}
+.ed{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.es{font-size:11px;flex:1;line-height:1.4}.unread .es{font-weight:700}
+.dt{font-size:10px;color:#8E8E93;white-space:nowrap;margin-left:4px}
+.mr{display:flex;align-items:flex-start;gap:8px;padding:7px 2px;border-bottom:1px solid #F5F5F7}
+.mr:last-child{border:none}
+.mi{font-size:13px;flex-shrink:0}.mt{font-size:11px;flex:1;line-height:1.4}
+.md{font-size:10px;color:#8E8E93;white-space:nowrap;margin-left:4px}.md.fut{color:#007AFF;font-weight:600}
+.nw{padding:10px 14px 12px;border-top:1px solid #F5F5F7}
+.nt{width:100%;min-height:48px;border:1px solid #E5E5EA;border-radius:8px;padding:7px 9px;font-size:12px;font-family:inherit;resize:vertical;outline:none;background:#FAFAFA;color:#1C1C1E}
+.nt:focus{border-color:#007AFF;background:#fff}
+.sc{position:relative}.sc input{padding-right:30px}
+.arr{position:absolute;right:10px;top:50%;transform:translateY(-50%);color:#8E8E93;font-size:11px;pointer-events:none}
+.dd{display:none;position:absolute;top:calc(100% + 4px);left:0;width:100%;background:#fff;border:1.5px solid #D1D1D6;border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.12);max-height:260px;overflow-y:auto;z-index:200}
+.dd.open{display:block}
+.dg{padding:6px 0 2px;border-bottom:1px solid #F2F2F7}.dg:last-child{border:none}
+.dgl{font-size:10px;font-weight:700;color:#8E8E93;text-transform:uppercase;letter-spacing:.4px;padding:4px 12px 2px}
+.do{padding:8px 14px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .1s}
+.do:hover,.do.sel{background:#007AFF18;color:#007AFF;font-weight:600}
+.toast{position:fixed;bottom:20px;right:20px;background:#1C1C1E;color:#fff;border-radius:11px;padding:10px 16px;font-size:12px;font-weight:600;z-index:9999;opacity:0;transform:translateY(8px);transition:all .25s;pointer-events:none}
+.toast.show{opacity:1;transform:translateY(0)}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:580px){.grid{grid-template-columns:1fr}.box.full{grid-column:auto}.hdr,.fbar,.detail{padding-left:16px;padding-right:16px}}
+</style></head><body>
+
+<div class="hdr">
+  <div class="hdr-top">
+    <div>
+      <h1>🌎 LATAM Partner Dashboard</h1>
+      <div class="hsub">Generated: Apr 05, 2026 · 09:40 PM &nbsp;·&nbsp; mprado@apple.com &nbsp;·&nbsp; Emails from <strong style="color:#fff">Mar 08 → today</strong> &nbsp;·&nbsp; 148 loaded</div>
+    </div>
+    <button class="rfbtn" onclick="alert('To get fresh data:\nDouble-click \'Open Dashboard.command\' again.')">🔄 Refresh</button>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="sv">16</div><div class="sl">Partners</div></div>
+    <div class="stat"><div class="sv">148</div><div class="sl">Emails</div></div>
+    <div class="stat"><div class="sv red">7</div><div class="sl">Unread</div></div>
+    <div class="stat"><div class="sv" style="color:#FF9F0A">6</div><div class="sl">Tier 1</div></div>
+    <div class="stat"><div class="sv" style="color:#34C759">2</div><div class="sl">Tier 2</div></div>
+    <div class="stat"><div class="sv" style="color:#8E44AD">8</div><div class="sl">Tier 3</div></div>
+  </div>
+</div>
+
+<div class="fbar">
+  <div class="fg">
+    <label>Issuer / Partner</label>
+    <div class="sc" id="sc">
+      <input id="ps" type="text" autocomplete="off" placeholder="Search or select issuer…"
+             oninput="filterDD()" onfocus="openDD()" onkeydown="keyDD(event)">
+      <span class="arr">▾</span>
+      <div class="dd" id="dd"></div>
+    </div>
+  </div>
+  <div class="fg">
+    <label>Tier</label>
+    <select id="ts" onchange="onTier()">
+      <option value="all">All Tiers</option>
+      <option value="1">⭐ Tier 1 — Brazil &amp; Mexico</option>
+      <option value="2">🌎 Tier 2 — LATAM Partners</option>
+      <option value="3">🔵 Tier 3 — Others</option>
+    </select>
+  </div>
+  <button class="clr" onclick="clearAll()">✕ Clear</button>
+</div>
+
+<div class="detail" id="detail">
+  <div class="empty"><span class="big">🌎</span>Select a partner above to see their activity<br>
+  <span style="font-size:12px;color:#C7C7CC">Last 4 weeks · Apr 05, 2026 · 09:40 PM</span></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const D={"Banco Santander": {"country": "Brazil", "tier": 1, "flag": "🇧🇷", "total": 7, "unread": 0, "boxes": {"Names Feature Adoption": [], "Compliance": [], "Billings and Metrics": [{"subject": "[EXT]Re: Invoices Santander Cayman - account # 1824610", "date": "2026-03-20", "read": true}, {"subject": "[EXT]Re: Invoices Santander Cayman - account # 1824610", "date": "2026-03-19", "read": true}, {"subject": "[EXT]Re: Invoices Santander Cayman - account # 1824610", "date": "2026-03-16", "read": true}, {"subject": "[EXT]Re: Invoices Santander Cayman - account # 1824610", "date": "2026-03-16", "read": true}, {"subject": "[EXT]Re: Invoices Santander Cayman - account # 1824610", "date": "2026-03-16", "read": true}, {"subject": "[EXT]Re: Invoices Santander Cayman - account # 1824610", "date": "2026-03-11", "read": true}, {"subject": "RES: RE: [EXT]Re: Invoices Santander Cayman - account # 1824610", "date": "2026-03-09", "read": true}], "Other Questions": []}, "meetings": []}, "BBVA": {"country": "Mexico", "tier": 1, "flag": "🇲🇽", "total": 5, "unread": 0, "boxes": {"Names Feature Adoption": [], "Compliance": [], "Billings and Metrics": [], "Other Questions": [{"subject": "Partidas abiertas - APPLE COLOMBIA SAS - 26 de marzo de 2026", "date": "2026-03-26", "read": true}, {"subject": "Partidas abiertas - APPLE COLOMBIA SAS - 19 de marzo de 2026", "date": "2026-03-19", "read": true}, {"subject": "Partidas abiertas - APPLE COLOMBIA SAS - 13 de marzo de 2026", "date": "2026-03-13", "read": true}, {"subject": "[External] 430574-APPLE COLOMBIA SAS-SOL DOC RENOVACIÓN HOMOLOGACIÓN - Full Completo", "date": "2026-03-11", "read": true}, {"subject": "Partidas abiertas - APPLE COLOMBIA SAS - 09 de marzo de 2026", "date": "2026-03-09", "read": true}]}, "meetings": []}, "Revolut BR": {"country": "Brazil", "tier": 1, "flag": "🇧🇷", "total": 5, "unread": 0, "boxes": {"Names Feature Adoption": [], "Compliance": [], "Billings and Metrics": [], "Other Questions": [{"subject": "URGENT - Correct Fee Calculation 1806081 - Revolut", "date": "2026-03-20", "read": true}, {"subject": "URGENT - Correct Fee Calculation 1806081 - Revolut", "date": "2026-03-12", "read": true}, {"subject": "URGENT - Correct Fee Calculation 1806081 - Revolut", "date": "2026-03-12", "read": true}, {"subject": "URGENT - Correct Fee Calculation 1806081 - Revolut", "date": "2026-03-12", "read": true}, {"subject": "URGENT - Correct Fee Calculation 1806081 - Revolut", "date": "2026-03-10", "read": true}]}, "meetings": []}, "Nubank": {"country": "Brazil", "tier": 1, "flag": "🇧🇷", "total": 5, "unread": 0, "boxes": {"Names Feature Adoption": [], "Compliance": [], "Billings and Metrics": [], "Other Questions": [{"subject": "Apple Pay BRA - NU PAGAMENTOS #1469609", "date": "2026-03-18", "read": true}, {"subject": "Nubank | Pago programado - PO 4500095585", "date": "2026-03-17", "read": true}, {"subject": "Nubank | Purchase Order 4500095585", "date": "2026-03-17", "read": true}, {"subject": "Apple Pay BRA - NU PAGAMENTOS #1469609", "date": "2026-03-13", "read": true}, {"subject": "Apple Pay BRA - NU PAGAMENTOS #1469609", "date": "2026-03-11", "read": true}]}, "meetings": []}, "Itaú": {"country": "Brazil", "tier": 1, "flag": "🇧🇷", "total": 4, "unread": 0, "boxes": {"Names Feature Adoption": [], "Compliance": [], "Billings and Metrics": [{"subject": "1589312 BANCO ITAU CHILE Apple Pay Reporting - Urgent Action Required!", "date": "2026-04-02", "read": true}, {"subject": "1589312 BANCO ITAU CHILE Apple Pay Reporting - Urgent Action Required!", "date": "2026-04-02", "read": true}, {"subject": "1589312 BANCO ITAU CHILE Apple Pay Reporting - Urgent Action Required!", "date": "2026-04-02", "read": true}, {"subject": "1589312 BANCO ITAU CHILE Apple Pay Reporting - Urgent Action Required!", "date": "2026-03-09", "read": true}], "Other Questions": []}, "meetings": []}, "Banorte": {"country": "Mexico", "tier": 1, "flag": "🇲🇽", "total": 1, "unread": 0, "boxes": {"Names Feature Adoption": [{"subject": "[EXTERNO]Re: Tap to Add - Estatus", "date": "2026-03-11", "read": true}], "Compliance": [], "Billings and Metrics": [], "Other Questions": []}, "meetings": []}, "Falabella": {"country": "Chile", "tier": 2, "flag": "🇨🇱", "total": 10, "unread": 0, "boxes": {"Names Feature Adoption": [], "Compliance": [], "Billings and Metrics": [], "Other Questions": [{"subject": "Falabella CL - Apple (Bi-weekly Sync)", "date": "2026-03-30", "read": true}, {"subject": "Falabella CL - Apple (Bi-weekly Sync)", "date": "2026-03-30", "read": true}, {"subject": "Falabella CL - Apple (Bi-weekly Sync)", "date": "2026-03-27", "read": true}, {"subject": "Falabella CL - Apple (Bi-weekly Sync)", "date": "2026-03-12", "read": true}, {"subject": "Falabella CL - Apple (Bi-weekly Sync)", "date": "2026-03-12", "read": true}, {"subject": "Falabella CL - Apple (Bi-weekly Sync)", "date": "2026-03-12", "read": true}, {"subject": "Falabella CL - Apple (Bi-weekly Sync)", "date": "2026-03-12", "read": true}, {"subject": "Meeting Forward Notification: Falabella CL - Apple (Bi-weekly Sync)", "date": "2026-03-10", "read": true}, {"subject": "Meeting Forward Notification: Falabella CL - Apple (Bi-weekly Sync)", "date": "2026-03-10", "read": true}, {"subject": "Meeting Forward Notification: Falabella CL - Apple (Bi-weekly Sync)", "date": "2026-03-10", "read": true}]}, "meetings": []}, "Santander AR": {"country": "Argentina", "tier": 2, "flag": "🇦🇷", "total": 4, "unread": 0, "boxes": {"Names Feature Adoption": [], "Compliance": [], "Billings and Metrics": [{"subject": "[EXT] Request for Information – New User Setup for Invoice Payments", "date": "2026-03-20", "read": true}, {"subject": "[EXT] Request for Information – New User Setup for Invoice Payments", "date": "2026-03-20", "read": true}, {"subject": "[EXT] PC Access Request for Information – New User Setup for Invoice Payments - 0001725659", "date": "2026-03-19", "read": true}, {"subject": "Request for Information – New User Setup for Invoice Payments", "date": "2026-03-17", "read": true}], "Other Questions": []}, "meetings": []}, "Elo": {"country": "Brazil", "tier": 3, "flag": "🇧🇷", "total": 27, "unread": 0, "boxes": {"Names Feature Adoption": [], "Compliance": [], "Billings and Metrics": [], "Other Questions": [{"subject": "Elo - Prod - spike in 50000 error code on networkCheckCard api call Radar 173163210", "date": "2026-04-02", "read": true}, {"subject": "Elo - Prod - spike in 50000 error code on networkCheckCard api call Radar 173163210", "date": "2026-04-02", "read": true}, {"subject": "Relatório de Consumo Mensal (Apple x Cielo) - Março/2026", "date": "2026-04-01", "read": true}, {"subject": "RES: RES: Whitelist Apple Pay - Volus", "date": "2026-03-31", "read": true}, {"subject": "RES: RES: Whitelist Apple Pay - Mulvi", "date": "2026-03-31", "read": true}, {"subject": "Prod- BIN CONFIGURATION Mulvi - 172146042: PROD - BIN Configuration MULVI - C2603-2649", "date": "2026-03-31", "read": true}, {"subject": "RES: Whitelist Apple Pay - Mulvi", "date": "2026-03-31", "read": true}, {"subject": "RES: Whitelist Apple Pay - Mulvi", "date": "2026-03-26", "read": true}, {"subject": "RES: Whitelist Apple Pay - Mulvi", "date": "2026-03-25", "read": true}, {"subject": "ELO Feb26 Report", "date": "2026-03-25", "read": true}, {"subject": "ELO Jan26 Report", "date": "2026-03-25", "read": true}, {"subject": "RES: Whitelist Apple Pay - Volus", "date": "2026-03-25", "read": true}, {"subject": "RES: RES: RES: **** RES: Request for Status Confirmation – Critical iFood Tickets (BIN Configur", "date": "2026-03-23", "read": true}, {"subject": "RES: RES: **** RES: Request for Status Confirmation – Critical iFood Tickets (BIN Configuration", "date": "2026-03-23", "read": true}, {"subject": "RES: **** RES: Request for Status Confirmation – Critical iFood Tickets (BIN Configuration & SE", "date": "2026-03-20", "read": true}, {"subject": "**** RES: Request for Status Confirmation – Critical iFood Tickets (BIN Configuration & SEID Li", "date": "2026-03-20", "read": true}, {"subject": "RES: Whitelist Apple Pay - Mulvi", "date": "2026-03-20", "read": true}, {"subject": "RES: Whitelist Apple Pay - Volus", "date": "2026-03-20", "read": true}, {"subject": "Whitelist Apple Pay - Mulvi", "date": "2026-03-16", "read": true}, {"subject": "Relatório de Consumo Mensal (Apple x Cielo) - Fevereiro/2026", "date": "2026-03-16", "read": true}, {"subject": "Whitelist Apple Pay - Volus", "date": "2026-03-16", "read": true}, {"subject": "RES: [EXT] Apple Pay - Elo Monthly Fraud Sync", "date": "2026-03-12", "read": true}, {"subject": "RES: RES: Acesso a ferramenta PartnerHUB", "date": "2026-03-11", "read": true}, {"subject": "RES: RES: RES: RES: RES: NDA document; Case-ID: 15514075", "date": "2026-03-10", "read": true}, {"subject": "RES: Acesso a ferramenta PartnerHUB", "date": "2026-03-10", "read": true}, {"subject": "Acesso a ferramenta PartnerHUB", "date": "2026-03-10", "read": true}, {"subject": "Relatório de Consumo Mensal (Apple x Cielo) - Fevereiro/2026", "date": "2026-03-09", "read": true}]}, "meetings": []}, "Scotiabank": {"country": "Various", "tier": 3, "flag": "🌎", "total": 22, "unread": 1, "boxes": {"Names Feature Adoption": [{"subject": "Apple Alignment - IFR | Feature Adoption | Reporting", "date": "2026-03-26", "read": true}, {"subject": "Apple Alignment - IFR | Feature Adoption | Reporting", "date": "2026-03-26", "read": true}, {"subject": "Apple Alignment - IFR | Feature Adoption | Reporting", "date": "2026-03-26", "read": true}, {"subject": "Apple Alignment - IFR | Feature Adoption | Reporting", "date": "2026-03-26", "read": true}, {"subject": "Apple Alignment - IFR | Feature Adoption | Reporting", "date": "2026-03-25", "read": true}, {"subject": "Apple Alignment - IFR | Feature Adoption | Reporting", "date": "2026-03-25", "read": true}, {"subject": "Apple Alignment - IFR | Feature Adoption | Reporting", "date": "2026-03-25", "read": true}, {"subject": "Apple Alignment - IFR | Feature Adoption | Reporting", "date": "2026-03-25", "read": true}, {"subject": "Apple Alignment - IFR | Feature Adoption | Reporting", "date": "2026-03-25", "read": true}, {"subject": "Apple Alignment - IFR | Feature Adoption | Reporting", "date": "2026-03-25", "read": true}], "Compliance": [], "Billings and Metrics": [], "Other Questions": [{"subject": "[External] Scotia - Apple Pay in Bahamas", "date": "2026-04-02", "read": true}, {"subject": "[External] Updated Risk Assessment", "date": "2026-03-31", "read": false}, {"subject": "[External] Caso Staff Scotiabank DR", "date": "2026-03-26", "read": true}, {"subject": "[External] Caso Staff Scotiabank DR", "date": "2026-03-25", "read": true}, {"subject": "Updated Risk Assessment", "date": "2026-03-25", "read": true}, {"subject": "[External] Caso Staff Scotiabank DR", "date": "2026-03-24", "read": true}, {"subject": "[External] Caso Staff Scotiabank DR", "date": "2026-03-19", "read": true}, {"subject": "[External] Caso Staff Scotiabank DR", "date": "2026-03-18", "read": true}, {"subject": "[External] Caso Staff Scotiabank DR", "date": "2026-03-18", "read": true}, {"subject": "Caso Staff Scotiabank DR", "date": "2026-03-18", "read": true}, {"subject": "[External] Scotia Latam - BiWeekly Sync", "date": "2026-03-18", "read": true}, {"subject": "[External] Scotia Latam - BiWeekly Sync", "date": "2026-03-12", "read": true}]}, "meetings": []}, "Mastercard": {"country": "Network", "tier": 3, "flag": "🌐", "total": 20, "unread": 3, "boxes": {"Names Feature Adoption": [{"subject": "Pay Tap to Add Card", "date": "2026-04-02", "read": false}], "Compliance": [{"subject": "FIME - Daviplata certification", "date": "2026-03-26", "read": false}, {"subject": "FIME - Daviplata certification", "date": "2026-03-26", "read": true}, {"subject": "Completion of Fime Certification for Jeeves (MEX and COL) - Mastercard Credit - Additional Mark", "date": "2026-03-18", "read": true}, {"subject": "Completion of Fime Certification for Jeeves (MEX and COL) - Mastercard Credit - Additional Mark", "date": "2026-03-18", "read": true}], "Billings and Metrics": [{"subject": "Bancolombia Metrics", "date": "2026-03-12", "read": true}], "Other Questions": [{"subject": "Event update: Weekly Meeting - Naranja / Apple / Mastercard", "date": "2026-03-31", "read": false}, {"subject": "Jeeves Launch - Apple Pay", "date": "2026-03-24", "read": true}, {"subject": "Event update: Weekly Meeting - Naranja / Apple / Mastercard", "date": "2026-03-24", "read": true}, {"subject": "Jeeves Launch - Apple Pay", "date": "2026-03-24", "read": true}, {"subject": "Radar:  173060998m - wpc-incidents@group.apple.com (P1)", "date": "2026-03-24", "read": true}, {"subject": "Radar:  173060998m - wpc-incidents@group.apple.com (P1)", "date": "2026-03-24", "read": true}, {"subject": "Last Day to Register - Powering the Next Era of Commerce", "date": "2026-03-18", "read": true}, {"subject": "NDA Inquiry – Itaú Uruguay", "date": "2026-03-13", "read": true}, {"subject": "PH Access", "date": "2026-03-13", "read": true}, {"subject": "PH Access", "date": "2026-03-13", "read": true}, {"subject": "Launch Approved Banco General Panama - Mastercard", "date": "2026-03-12", "read": true}, {"subject": "Declined: MC Mexico Bi Weekly Call", "date": "2026-03-11", "read": true}, {"subject": "Acceptance - Mexico", "date": "2026-03-09", "read": true}, {"subject": "0001835215 Facturación banco de Occidente", "date": "2026-03-09", "read": true}]}, "meetings": []}, "Visa": {"country": "Network", "tier": 3, "flag": "🌐", "total": 16, "unread": 2, "boxes": {"Names Feature Adoption": [], "Compliance": [{"subject": "Certificação Afinz", "date": "2026-03-24", "read": true}], "Billings and Metrics": [], "Other Questions": [{"subject": "Canceled: Apple/Visa Weekly", "date": "2026-04-02", "read": true}, {"subject": "Trâmites e Contrato junto as Wallets - Realize <> Visa", "date": "2026-04-01", "read": false}, {"subject": "BBVA UY - Apple Pay", "date": "2026-03-27", "read": false}, {"subject": "Respuesta automática: Apple Pay: baja de token generada por la wallet?", "date": "2026-03-24", "read": true}, {"subject": "Feedback Request: Apple VRM mapping", "date": "2026-03-24", "read": true}, {"subject": "Recall: LAC - opt-out requests for Multi-Device Provisioning", "date": "2026-03-13", "read": true}, {"subject": "LAC - opt-out requests for Multi-Device Provisioning", "date": "2026-03-13", "read": true}, {"subject": "Citibank's Costco", "date": "2026-03-12", "read": true}, {"subject": "Removing SEID from Blocked Device List - Banestes S.A", "date": "2026-03-11", "read": true}, {"subject": "(CLM) Rules and Scenarios - Banestes S.A.", "date": "2026-03-11", "read": true}, {"subject": "Visa Logo Update", "date": "2026-03-10", "read": true}, {"subject": "Visa Logo Update", "date": "2026-03-10", "read": true}, {"subject": "IMPORTANT - PAYBLR (GENNIUS)", "date": "2026-03-10", "read": true}, {"subject": "IMPORTANT - PAYBLR (GENNIUS)", "date": "2026-03-09", "read": true}, {"subject": "Clarifications Regarding Apple Pay Agreement – Lemon", "date": "2026-03-09", "read": true}]}, "meetings": []}, "Pomelo": {"country": "Argentina", "tier": 3, "flag": "🇦🇷", "total": 14, "unread": 0, "boxes": {"Names Feature Adoption": [], "Compliance": [], "Billings and Metrics": [{"subject": "1686567 POMELO TECNOLOGIA SAS Kind Reminder: Apple Pay Reporting Due!", "date": "2026-04-01", "read": true}, {"subject": "1686567 POMELO TECNOLOGIA SAS Kind Reminder: Apple Pay Reporting Due!", "date": "2026-03-31", "read": true}, {"subject": "1686567 POMELO TECNOLOGIA SAS Kind Reminder: Apple Pay Reporting Due!", "date": "2026-03-30", "read": true}, {"subject": "1686567 POMELO TECNOLOGIA SAS Kind Reminder: Apple Pay Reporting Due!", "date": "2026-03-27", "read": true}, {"subject": "1686567 POMELO TECNOLOGIA SAS Kind Reminder: Apple Pay Reporting Due!", "date": "2026-03-17", "read": true}, {"subject": "1686567 POMELO TECNOLOGIA SAS Kind Reminder: Apple Pay Reporting Due!", "date": "2026-03-16", "read": true}], "Other Questions": [{"subject": "Question Regarding BIN Reassignment Across Program Managers", "date": "2026-03-31", "read": true}, {"subject": "Question Regarding BIN Reassignment Across Program Managers", "date": "2026-03-26", "read": true}, {"subject": "Apple <> Pomelo :: Program Manager Pipeline 04/7 Window", "date": "2026-03-13", "read": true}, {"subject": "New BINs for approved PM", "date": "2026-03-13", "read": true}, {"subject": "Apple <> Pomelo :: Program Manager Pipeline 03/17 Window", "date": "2026-03-11", "read": true}, {"subject": "Apple <> Pomelo :: Program Manager Pipeline 03/17 Window", "date": "2026-03-11", "read": true}, {"subject": "Apple <> Pomelo :: Program Manager Pipeline 03/17 Window", "date": "2026-03-10", "read": true}, {"subject": "Apple <> Pomelo :: Program Manager Pipeline 03/17 Window", "date": "2026-03-10", "read": true}]}, "meetings": []}, "BTG Pactual": {"country": "Brazil", "tier": 3, "flag": "🇧🇷", "total": 5, "unread": 0, "boxes": {"Names Feature Adoption": [], "Compliance": [], "Billings and Metrics": [{"subject": "BTG Pactual Conglomerate Billing Breakdown", "date": "2026-04-02", "read": true}, {"subject": "BTG Pactual Conglomerate Billing Breakdown", "date": "2026-03-27", "read": true}, {"subject": "BTG Pactual Conglomerate Billing Breakdown", "date": "2026-03-27", "read": true}, {"subject": "BTG Pactual Conglomerate Billing Breakdown", "date": "2026-03-19", "read": true}, {"subject": "BTG Pactual Conglomerate Billing Breakdown", "date": "2026-03-16", "read": true}], "Other Questions": []}, "meetings": []}, "Banco de Chile": {"country": "Chile", "tier": 3, "flag": "🇨🇱", "total": 2, "unread": 0, "boxes": {"Names Feature Adoption": [], "Compliance": [], "Billings and Metrics": [{"subject": "Statement of account: 0001635471 - BANCO DE CHILE 1635471", "date": "2026-03-26", "read": true}, {"subject": "Statement of account: 0001635471", "date": "2026-03-18", "read": true}], "Other Questions": []}, "meetings": []}, "BAC Credomatic": {"country": "Central America", "tier": 3, "flag": "🌎", "total": 1, "unread": 1, "boxes": {"Names Feature Adoption": [], "Compliance": [], "Billings and Metrics": [], "Other Questions": [{"subject": "Comprobante Orden de Compra 7600131311", "date": "2026-03-31", "read": false}]}, "meetings": []}};
+const TODAY=new Date().toISOString().slice(0,10);
+const TL={'1':'⭐ Tier 1','2':'🌎 Tier 2','3':'🔵 Tier 3'};
+const TLL={'1':'⭐ Tier 1 — Brazil & Mexico','2':'🌎 Tier 2 — LATAM Partners','3':'🔵 Tier 3 — Others'};
+const BM={'Names Feature Adoption':{i:'📲',c:'#5856D6'},'Compliance':{i:'📋',c:'#FF9500'},'Billings and Metrics':{i:'💰',c:'#34C759'},'Other Questions':{i:'💬',c:'#8E8E93'},'Meetings':{i:'📅',c:'#007AFF'}};
+let AP=null,AT='all',DI=-1;
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function toast(m,c){const t=document.getElementById('toast');t.textContent=m;t.style.background=c||'#1C1C1E';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+function buildDD(){
+  const dd=document.getElementById('dd'),q=document.getElementById('ps').value.toLowerCase();
+  const g={'1':[],'2':[],'3':[]};
+  Object.entries(D).forEach(([n,d])=>{
+    if(AT!=='all'&&String(d.tier)!==AT)return;
+    if(q&&!n.toLowerCase().includes(q)&&!d.country.toLowerCase().includes(q))return;
+    g[String(d.tier)].push([n,d]);
+  });
+  let h='',tot=0;
+  ['1','2','3'].forEach(t=>{
+    const items=g[t].sort((a,b)=>a[0].localeCompare(b[0]));
+    if(!items.length)return;tot+=items.length;
+    h+=`<div class="dg"><div class="dgl">${TLL[t]}</div>`;
+    items.forEach(([n,d])=>{
+      const ud=d.unread>0?'<span style="width:6px;height:6px;border-radius:50%;background:#FF3B30;display:inline-block;margin-left:6px;vertical-align:middle"></span>':'';
+      h+=`<div class="do${n===AP?' sel':''}" data-n="${esc(n)}" onclick="pick(this)">${d.flag} <strong>${esc(n)}</strong><span style="font-size:11px;color:#8E8E93;margin-left:6px">${d.country}</span>${ud}</div>`;
+    });
+    h+='</div>';
+  });
+  dd.innerHTML=tot?h:'<div style="padding:14px;text-align:center;color:#8E8E93;font-size:12px">No partners match</div>';
+  DI=-1;
+}
+function openDD(){buildDD();document.getElementById('dd').classList.add('open');}
+function closeDD(){document.getElementById('dd').classList.remove('open');}
+document.addEventListener('click',e=>{if(!document.getElementById('sc').contains(e.target))closeDD();});
+function filterDD(){buildDD();document.getElementById('dd').classList.add('open');}
+function onTier(){
+  AT=document.getElementById('ts').value;buildDD();
+  if(AP&&AT!=='all'&&D[AP]&&String(D[AP].tier)!==AT){
+    AP=null;document.getElementById('ps').value='';
+    document.getElementById('detail').innerHTML='<div class="empty"><span class="big">🌎</span>Select a partner above</div>';
+  }
+}
+function pick(el){AP=el.getAttribute('data-n');document.getElementById('ps').value=AP;closeDD();render(AP);}
+function keyDD(e){
+  const opts=[...document.querySelectorAll('.do')];
+  if(e.key==='ArrowDown'){e.preventDefault();DI=Math.min(DI+1,opts.length-1);opts.forEach((o,i)=>o.classList.toggle('sel',i===DI));opts[DI]?.scrollIntoView({block:'nearest'});}
+  else if(e.key==='ArrowUp'){e.preventDefault();DI=Math.max(DI-1,0);opts.forEach((o,i)=>o.classList.toggle('sel',i===DI));}
+  else if(e.key==='Enter'){e.preventDefault();if(DI>=0&&opts[DI])pick(opts[DI]);else if(opts.length===1)pick(opts[0]);}
+  else if(e.key==='Escape')closeDD();
+}
+function clearAll(){document.getElementById('ps').value='';document.getElementById('ts').value='all';AT='all';AP=null;closeDD();document.getElementById('detail').innerHTML='<div class="empty"><span class="big">🌎</span>Select a partner above</div>';}
+function getNote(n){try{return localStorage.getItem('note_'+n)||'';}catch{return'';}}
+function setNote(n,v){try{localStorage.setItem('note_'+n,v);toast('✅ Note saved','#1A7A3A');}catch(e){toast('⚠️ Could not save','#C0392B');}}
+function render(name){
+  const d=D[name];if(!d)return;
+  const tb=`<span class="tb tb${d.tier}">${TL[d.tier]}</span>`;
+  const ub=d.unread>0?`<span class="ub">${d.unread} unread</span>`:'';
+  let h=`<div class="ph"><span class="pf">${d.flag}</span><div style="flex:1"><div class="pn">${esc(name)}</div><div class="pm">${d.country} · ${d.total} emails (last 4 weeks) · ${TLL[d.tier]}</div></div>${tb} ${ub}</div><div class="grid">`;
+  ['Names Feature Adoption','Compliance','Billings and Metrics','Other Questions'].forEach(bn=>{
+    const m=BM[bn],items=d.boxes[bn]||[];
+    h+=`<div class="box"><div class="bh" style="border-left:3px solid ${m.c}"><span class="bi">${m.i}</span><span class="bt">${bn}</span><span class="bc" style="background:${m.c}18;color:${m.c}">${items.length}</span></div><div class="bb">`;
+    h+=items.length?items.map(e=>`<div class="er${e.read?'':' unread'}"><div class="ed" style="background:${m.c}"></div><span class="es">${esc(e.subject)}</span><span class="dt">${e.date}</span></div>`).join(''):'<div class="be">No inquiries in the last 4 weeks</div>';
+    h+='</div></div>';
+  });
+  const mm=BM['Meetings'],mtg=d.meetings||[];
+  h+=`<div class="box full"><div class="bh" style="border-left:3px solid ${mm.c}"><span class="bi">${mm.i}</span><span class="bt">Meetings with ${esc(name)} <span style="font-size:11px;font-weight:400;color:#8E8E93">· from Calendar</span></span><span class="bc" style="background:${mm.c}18;color:${mm.c}">${mtg.length}</span></div><div class="bb" style="max-height:180px">`;
+  h+=mtg.length?mtg.map(m=>{const f=m.date>TODAY;return`<div class="mr"><span class="mi">${f?'📆':'📅'}</span><span class="mt">${esc(m.title)}</span><span class="md${f?' fut':''}">${m.date}${f?' ↑':''}</span></div>`;}).join(''):'<div class="be">No calendar meetings found in the last 4 weeks</div>';
+  const nid='nt_'+name.replace(/[^a-z0-9]/gi,'_');
+  h+=`</div><div class="nw"><textarea class="nt" id="${nid}" placeholder="📝 Notes about ${esc(name)}…" onblur="setNote(this.getAttribute('data-p'),this.value)" data-p="${esc(name)}">${esc(getNote(name))}</textarea></div></div></div>`;
+  document.getElementById('detail').innerHTML=h;
+}
+</script></body></html>
